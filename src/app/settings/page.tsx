@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Save,
@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 
 type Tab = "ai" | "profile" | "general";
 
-export default function SettingsPage() {
+function SettingsContent() {
   const searchParams = useSearchParams();
   const { sidebarOpen } = useAppStore();
   const { settings, updateAISettings, updateProfile, updateSettings } = useSettingsStore();
@@ -467,5 +467,13 @@ export default function SettingsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="spinner" /></div>}>
+      <SettingsContent />
+    </Suspense>
   );
 }

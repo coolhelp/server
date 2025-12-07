@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Sparkles, Copy, Check, FileText, Send, CheckCircle, RefreshCw } from "lucide-react";
 import { Header } from "@/components";
 import { useAppStore, useSettingsStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
-export default function ProjectsPage() {
+function ProjectsContent() {
   const searchParams = useSearchParams();
   const { sidebarOpen } = useAppStore();
   const { settings, updateAISettings, updateProfile } = useSettingsStore();
@@ -309,5 +309,13 @@ export default function ProjectsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ProjectsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="spinner" /></div>}>
+      <ProjectsContent />
+    </Suspense>
   );
 }

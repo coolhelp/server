@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Header } from "@/components";
 import { useAppStore, useSettingsStore } from "@/lib/store";
@@ -22,7 +22,7 @@ interface Message {
   createdAt: string;
 }
 
-export default function QAGeneratorPage() {
+function QAGeneratorContent() {
   const searchParams = useSearchParams();
   const { sidebarOpen } = useAppStore();
   const { settings, updateAISettings, updateProfile } = useSettingsStore();
@@ -333,5 +333,13 @@ export default function QAGeneratorPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function QAGeneratorPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="spinner" /></div>}>
+      <QAGeneratorContent />
+    </Suspense>
   );
 }
